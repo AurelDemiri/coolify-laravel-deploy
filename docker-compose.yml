@@ -1,0 +1,65 @@
+version: "3.8"
+
+networks:
+  npm-network:
+    driver: bridge
+
+services:
+
+  # NGINX Proxy Manager
+  npm:
+    image: jc21/nginx-proxy-manager:latest
+    container_name: npm
+    restart: always
+    ports:
+      - "80:80"       # HTTP
+      - "443:443"     # HTTPS
+      - "81:81"       # Admin UI
+    volumes:
+      - ./npm/data:/data
+      - ./npm/letsencrypt:/etc/letsencrypt
+    networks:
+      - npm-network
+
+  # Laravel App
+  laravel-app:
+    build:
+      context: .
+    container_name: app-laravel
+    restart: always
+    env_file:
+      - .env
+    volumes:
+      - ./laravel:/var/www/html
+    depends_on:
+      - mysql
+      - redis
+    networks:
+      - npm-network
+
+  mysql:
+    image: mysql:8
+    container_name: mysql-laravel
+    restart: always
+    environment:
+      MYSQL_DATABASE: laravel
+      MYSQL_USER: user
+      MYSQL_PASSWORD: secret
+      MYSQL_ROOT_PASSWORD: rootsecret
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - npm-network
+
+  redis:
+    image: redis:alpine
+    container_name: redis-laravel
+    restart: always
+    volumes:
+      - redis_data:/data
+    networks:
+      - npm-network
+
+volumes:
+  mysql_data:
+  redis_data:
