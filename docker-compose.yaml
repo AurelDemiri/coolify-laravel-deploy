@@ -30,7 +30,7 @@ services:
       - ./laravel:/var/www/html
     depends_on:
       - mysql
-      - redis
+      # - redis
     networks:
       - npm-network
 
