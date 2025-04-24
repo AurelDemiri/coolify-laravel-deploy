@@ -12,9 +12,9 @@ services:
     container_name: npm
     restart: always
     ports:
-      - "80:80"       # HTTP
-      - "443:443"     # HTTPS
-      - "81:81"       # Admin UI
+      - "9080:80"       # HTTP
+      - "9443:443"      # HTTPS
+      - "9081:81"       # Admin UI
     volumes:
       - ./npm/data:/data
       - ./npm/letsencrypt:/etc/letsencrypt
@@ -24,9 +24,12 @@ services:
   # Laravel App
   laravel-app:
     build:
-      context: .
+      context: ./laravel
+      dockerfile: Dockerfile
     container_name: app-laravel
     restart: always
+    expose:
+      - "9000"  # PHP-FPM port
     env_file:
       - .env
     volumes:
