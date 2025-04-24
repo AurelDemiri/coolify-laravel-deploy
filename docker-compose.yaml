@@ -30,8 +30,6 @@ services:
     restart: always
     expose:
       - "9000"  # PHP-FPM port
-    env_file:
-      - .env
     volumes:
       - ./laravel:/var/www/html
     depends_on:
