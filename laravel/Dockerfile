@@ -39,4 +39,4 @@ USER www-data
 EXPOSE 9000
 
 # Start PHP-FPM and run the startup script
-CMD ["php-fpm"]
+CMD ["/usr/local/bin/startup.sh"]
