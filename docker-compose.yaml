@@ -48,14 +48,14 @@ services:
     networks:
       - npm-network
 
-  redis:
-    image: redis:alpine
-    container_name: redis-laravel
-    restart: always
-    volumes:
-      - redis_data:/data
-    networks:
-      - npm-network
+  # redis:
+  #   image: redis:alpine
+  #   container_name: redis-laravel
+  #   restart: always
+  #   volumes:
+  #     - redis_data:/data
+  #   networks:
+  #     - npm-network
 
 volumes:
   mysql_data:
